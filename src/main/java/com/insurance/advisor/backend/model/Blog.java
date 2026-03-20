@@ -1,5 +1,6 @@
 package com.insurance.advisor.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,20 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private BlogCategory category;
+
+    @JsonProperty("category")
+    // Relationships & Meta
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+
+    public void setCategoryFromId(String id) {
+        if (id != null && !id.isEmpty()) {
+            BlogCategory cat = new BlogCategory();
+            // Convert the String to a UUID object
+            cat.setId(UUID.fromString(id));
+            this.category = cat;
+        }
+    }
 
     @Column(name = "author_id")
     private UUID authorId; // Links to your AdminUser

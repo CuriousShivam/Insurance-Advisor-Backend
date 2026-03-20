@@ -50,4 +50,23 @@ public class BlogPublicController {
         );
         return ResponseEntity.ok(results);
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<Blog>> getPublicBlogs() {
+        List<Blog> blogs = blogRepository.findPublishedBlogsPrioritized();
+
+        if (blogs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(blogs);
+    }
+
+    @GetMapping("/post/{slug}")
+    public ResponseEntity<Blog> getBlogBySlug(@PathVariable String slug) {
+        System.out.println(slug);
+        return blogRepository.findBySlugAndStatusIgnoreCase(slug, "published")
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

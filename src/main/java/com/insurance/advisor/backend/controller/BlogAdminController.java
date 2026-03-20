@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -101,6 +102,18 @@ public class BlogAdminController {
             blogRepository.delete(blog);
             return ResponseEntity.ok("Blog deleted successfully!");
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Blog>> getAllBlogs() {
+        // Fetch all blogs from PostgreSQL
+        List<Blog> blogs = blogRepository.findAll();
+
+        if (blogs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(blogs);
     }
 }
 
