@@ -8,4 +8,6 @@ import java.util.List;
 public interface EnquiryRepository extends JpaRepository<Enquiry, UUID> {
     // Helps with Admin Dashboard filtering [cite: 66]
     List<Enquiry> findByFollowUpStatus(String status);
+
+    List<Enquiry> findAllByOrderByCreatedAtDesc();
 }

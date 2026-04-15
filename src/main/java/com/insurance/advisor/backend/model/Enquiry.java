@@ -33,7 +33,7 @@ public class Enquiry {
     @Column(name = "insurance_type", nullable = false, length = 50)
     private String insuranceType; // Type of insurance (Health, Life, etc.) [cite: 342]
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column( columnDefinition = "TEXT")
     private String requirements; // Detailed customer requirements [cite: 342]
 
     @Column(name = "preferred_contact_time", length = 50)

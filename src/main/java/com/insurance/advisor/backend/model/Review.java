@@ -64,6 +64,16 @@ public class Review {
     @Column(name = "is_featured")
     private Boolean isFeatured = false; // Flag to feature review on homepage [cite: 351, 356]
 
+    // Standard Setter
+    public void setFeatured(boolean featured) {
+        this.isFeatured = featured;
+    }
+
+    // Standard Getter
+    public boolean isFeatured() {
+        return isFeatured;
+    }
+
     @Column(name = "ip_address", length = 45)
     private String ipAddress; // Customer IP for analytics [cite: 351, 356]
 
@@ -75,4 +85,6 @@ public class Review {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now(); // Last modification timestamp [cite: 351, 356]
+
+
 }

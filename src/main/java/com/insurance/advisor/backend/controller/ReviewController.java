@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -87,4 +88,19 @@ public class ReviewController {
 
         return ResponseEntity.ok(allReviews);
     }
+
+    @PatchMapping("/admin/reviews/{id}")
+    public ResponseEntity<?> updateReviewStatus(@PathVariable UUID id, @RequestBody Map<String, Object> updates) {
+        return reviewRepository.findById(id).map(review -> {
+            if (updates.containsKey("approvalStatus")) {
+                review.setApprovalStatus((String) updates.get("approvalStatus"));
+            }
+            if (updates.containsKey("isFeatured")) {
+                review.setFeatured((Boolean) updates.get("isFeatured"));
+            }
+            reviewRepository.save(review);
+            return ResponseEntity.ok(review);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
 }

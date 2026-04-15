@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -38,7 +39,18 @@ public class EnquiryController {
     @GetMapping("/admin/enquiries/all")
     public ResponseEntity<List<Enquiry>> getAllEnquiries() {
         // In a real scenario, Spring Security ensures only 'ADMIN' role reaches here
-        List<Enquiry> enquiries = enquiryRepository.findAll();
+        List<Enquiry> enquiries = enquiryRepository.findAllByOrderByCreatedAtDesc();
         return ResponseEntity.ok(enquiries);
     }
+
+    // Requirement 6.1.3: Data Deletion for Administrative Management
+    @DeleteMapping("/admin/enquiries/{id}")
+    public ResponseEntity<Void> deleteEnquiry(@PathVariable UUID id) {
+            if (!enquiryRepository.existsById(id)) {
+                return ResponseEntity.notFound().build();
+            }
+            enquiryRepository.deleteById(id);
+            System.out.println("DELETED: Enquiry ID " + id); // Visible in Xubuntu terminal
+            return ResponseEntity.noContent().build();
+        }
 }

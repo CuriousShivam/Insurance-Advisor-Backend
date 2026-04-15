@@ -1,7 +1,7 @@
 package com.insurance.advisor.backend.controller;
 
 import com.insurance.advisor.backend.model.AnalyticsEvent;
-import com.insurance.advisor.backend.repository.AnalyticsEventRepository;
+import com.insurance.advisor.backend.service.AnalyticsService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnalyticsController {
 
     @Autowired
-    private AnalyticsEventRepository analyticsRepository;
+    private AnalyticsService analyticsService;
 
     @PostMapping("/log")
     public void logEvent(@RequestBody AnalyticsEvent event, HttpServletRequest request) {
-        event.setIpAddress(request.getRemoteAddr());
-        event.setUserAgent(request.getHeader("User-Agent"));
-        analyticsRepository.save(event);
+        // Delegate all processing logic to the service layer [cite: 310-313]
+        analyticsService.processAndLogEvent(event, request);
     }
 }
