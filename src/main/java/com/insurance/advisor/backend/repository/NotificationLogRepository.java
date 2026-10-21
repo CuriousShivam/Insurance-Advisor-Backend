@@ -1,9 +1,10 @@
 package com.insurance.advisor.backend.repository;
 
-import com.insurance.advisor.backend.model.NotificationLog;
+import com.insurance.advisor.backend.entity.NotificationLog;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.UUID;
+
 import java.util.List;
+import java.util.UUID;
 
 public interface NotificationLogRepository extends JpaRepository<NotificationLog, UUID> {
 

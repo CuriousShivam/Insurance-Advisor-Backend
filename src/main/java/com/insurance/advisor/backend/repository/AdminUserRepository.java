@@ -1,5 +1,5 @@
 package com.insurance.advisor.backend.repository;
-import com.insurance.advisor.backend.model.AdminUser;
+import com.insurance.advisor.backend.entity.AdminUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;

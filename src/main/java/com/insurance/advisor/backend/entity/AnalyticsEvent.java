@@ -1,4 +1,4 @@
-package com.insurance.advisor.backend.model;
+package com.insurance.advisor.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

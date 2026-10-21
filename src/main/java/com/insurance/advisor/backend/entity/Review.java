@@ -1,11 +1,12 @@
-package com.insurance.advisor.backend.model;
+package com.insurance.advisor.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.UUID;
-import java.time.LocalDateTime;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Entity representing the reviews table for customer feedback.

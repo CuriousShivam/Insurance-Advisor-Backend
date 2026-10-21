@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.Images;
+import com.insurance.advisor.backend.entity.Images;
 import com.insurance.advisor.backend.repository.ImagesRepository;
 import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.models.FileCreateRequest;

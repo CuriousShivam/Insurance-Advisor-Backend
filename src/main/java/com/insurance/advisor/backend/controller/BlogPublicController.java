@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.Blog;
+import com.insurance.advisor.backend.entity.Blog;
 import com.insurance.advisor.backend.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/blogs")
+@RequestMapping("`/api/blogs`")
 public class BlogPublicController {
 
     @Autowired

@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.service;
 
-import com.insurance.advisor.backend.model.AnalyticsEvent;
+import com.insurance.advisor.backend.entity.AnalyticsEvent;
 import com.insurance.advisor.backend.repository.AnalyticsEventRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

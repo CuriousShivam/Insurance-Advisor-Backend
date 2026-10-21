@@ -1,12 +1,11 @@
 package com.insurance.advisor.backend.repository;
 
-import com.insurance.advisor.backend.model.AnalyticsEvent;
+import com.insurance.advisor.backend.entity.AnalyticsEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.UUID;
-import java.util.List;
 
 public interface AnalyticsEventRepository extends JpaRepository<AnalyticsEvent, UUID> {
 

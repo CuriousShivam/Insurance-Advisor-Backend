@@ -1,13 +1,13 @@
-package com.insurance.advisor.backend.model;
+package com.insurance.advisor.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blog_categories")

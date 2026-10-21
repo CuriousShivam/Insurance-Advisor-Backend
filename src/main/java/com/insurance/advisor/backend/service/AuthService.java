@@ -1,44 +1,65 @@
 package com.insurance.advisor.backend.service;
 
-import com.insurance.advisor.backend.model.AdminUser;
+import com.insurance.advisor.backend.config.JWTUtil;
+import com.insurance.advisor.backend.entity.AdminUser;
+import com.insurance.advisor.backend.dto.AuthResponse;
+import com.insurance.advisor.backend.dto.LoginInCreeds;
 import com.insurance.advisor.backend.repository.AdminUserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {
 
     @Autowired
-    private AdminUserRepository repository;
+    private AdminUserRepository userRepo;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private AuthenticationManager authManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Value("${app.jwt.expiryInMinutes}")
+    private String tokenExpiry;
+
 
     /**
      * Handles new admin registration with password encryption[cite: 66, 74].
      */
-    public void registerAdmin(AdminUser admin) {
-        // Encrypt password using BCrypt before database persistence [cite: 764]
-        admin.setPasswordHash(passwordEncoder.encode(admin.getPasswordHash()));
-        repository.save(admin);
+    public ResponseEntity<AuthResponse> registerAdmin(AdminUser user) {
+        System.out.println("Api : /register Post");
+        String encodedPass = passwordEncoder.encode(user.getPasswordHash());
+
+        user.setPasswordHash(encodedPass);
+        userRepo.save(user);
+
+        String token = jwtUtil.generateToken(user.getEmail());
+        return ResponseEntity.ok(new AuthResponse(token, "Bearer", tokenExpiry+" mins"));
     }
 
     /**
      * Validates admin credentials and manages session creation [cite: 251, 765-766].
      */
-    public boolean authenticate(AdminUser loginRequest, HttpServletRequest request) {
-        Optional<AdminUser> admin = repository.findByEmail(loginRequest.getEmail());
-
-        // Verify email existence and match hashed passwords [cite: 258, 764]
-        if (admin.isPresent() && passwordEncoder.matches(loginRequest.getPasswordHash(), admin.get().getPasswordHash())) {
-            // Trigger secure session creation and JSESSIONID cookie [cite: 66, 769]
-            request.getSession(true);
-            return true;
+    public ResponseEntity<AuthResponse> login (LoginInCreeds body) {
+        System.out.println("Api : /login Post");
+        try{
+            UsernamePasswordAuthenticationToken authInputToken =
+                    new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPasswordHash());
+            authManager.authenticate(authInputToken);
+            String token = jwtUtil.generateToken(body.getEmail());
+            return ResponseEntity.ok(new AuthResponse(token, "Bearer", tokenExpiry+" mins"));
+        } catch(AuthenticationException authExc){
+            throw new RuntimeException("Invalid username/password.");
         }
-        return false;
     }
 }

@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.BlogCategory;
+import com.insurance.advisor.backend.entity.BlogCategory;
 import com.insurance.advisor.backend.service.BlogCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

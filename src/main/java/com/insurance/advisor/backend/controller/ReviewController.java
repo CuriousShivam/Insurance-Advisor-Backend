@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.Review;
+import com.insurance.advisor.backend.entity.Review;
 import com.insurance.advisor.backend.repository.ReviewRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

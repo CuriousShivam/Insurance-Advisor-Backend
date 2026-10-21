@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.Enquiry;
+import com.insurance.advisor.backend.entity.Enquiry;
 import com.insurance.advisor.backend.repository.EnquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

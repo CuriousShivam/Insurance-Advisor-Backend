@@ -1,6 +1,6 @@
 package com.insurance.advisor.backend.service;
 
-import com.insurance.advisor.backend.model.BlogCategory;
+import com.insurance.advisor.backend.entity.BlogCategory;
 import com.insurance.advisor.backend.repository.BlogCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

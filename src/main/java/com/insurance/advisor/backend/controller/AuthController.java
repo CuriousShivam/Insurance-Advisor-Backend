@@ -1,11 +1,15 @@
 package com.insurance.advisor.backend.controller;
 
-import com.insurance.advisor.backend.model.AdminUser;
+import com.insurance.advisor.backend.entity.AdminUser;
+import com.insurance.advisor.backend.dto.AuthResponse;
+import com.insurance.advisor.backend.dto.LoginInCreeds;
 import com.insurance.advisor.backend.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -14,21 +18,15 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    // Endpoint for Admin Registration (One-time setup)
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AdminUser admin) {
-        authService.registerAdmin(admin);
-        return ResponseEntity.ok("Admin registered successfully!");
+    public ResponseEntity<AuthResponse> registerHandler(@RequestBody AdminUser user){
+        return authService.registerAdmin(user);
     }
 
-    // Endpoint for Admin Login [cite: 249, 256]
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AdminUser loginRequest, HttpServletRequest request) {
-        boolean isAuthenticated = authService.authenticate(loginRequest, request);
-
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login Successful");
-        }
-        return ResponseEntity.status(401).body("Invalid email or password");
+    public ResponseEntity<AuthResponse> loginHandler(
+            @RequestBody LoginInCreeds body
+    ){
+        return authService.login(body);
     }
 }
