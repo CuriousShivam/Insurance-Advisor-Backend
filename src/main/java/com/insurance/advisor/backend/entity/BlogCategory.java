@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "blog_categories")
-@Getter @Setter
+@Getter
+@Setter
 public class BlogCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,10 +30,7 @@ public class BlogCategory {
     @Column(name = "is_active")
     private Boolean isActive = true; // Default to active
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnore // Prevents infinite recursion in JSON
-    private List<Blog> blogs;
+    private LocalDateTime createdAt;
 }

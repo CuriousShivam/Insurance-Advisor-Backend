@@ -1,6 +1,8 @@
 package com.insurance.advisor.backend.service;
 
 import com.insurance.advisor.backend.entity.Enquiry;
+import com.insurance.advisor.backend.entity.enums.FollowUpStatus;
+import com.insurance.advisor.backend.entity.enums.PriorityLevel;
 import com.insurance.advisor.backend.repository.EnquiryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ public class EnquiryService {
      */
     public ResponseEntity<String> submitEnquiry( Enquiry enquiry) {
         // Set default values as per proposal [cite: 340]
-        enquiry.setFollowUpStatus("pending");
-        enquiry.setPriorityLevel("normal");
+        enquiry.setFollowUpStatus(FollowUpStatus.NEW);
+        enquiry.setPriorityLevel(PriorityLevel.LOW);
         enquiry.setCreatedAt(LocalDateTime.now());
 
         enquiryRepository.save(enquiry);

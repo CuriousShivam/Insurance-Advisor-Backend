@@ -9,7 +9,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "blogs")
+@Table(
+        name = "blogs",
+        indexes = {
+                @Index(name = "idx_blog_blog_category", columnList = "category_id"),
+                @Index(name="idx_blog_slug", columnList = "slug")
+        }
+)
 @Getter @Setter
 public class Blog {
     @Id
@@ -42,26 +48,21 @@ public class Blog {
     private String featuredImage;
 
     // Relationships & Meta
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "category_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name="fk_category_id_from_blog_category")
+    )
     private BlogCategory category;
 
-    @JsonProperty("category")
-    // Relationships & Meta
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-
-    public void setCategoryFromId(String id) {
-        if (id != null && !id.isEmpty()) {
-            BlogCategory cat = new BlogCategory();
-            // Convert the String to a UUID object
-            cat.setId(UUID.fromString(id));
-            this.category = cat;
-        }
-    }
-
-    @Column(name = "author_id")
-    private UUID authorId; // Links to your AdminUser
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "author_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name="fk_author_id_from_admin_user")
+    )
+    private AdminUser authorId; // Links to your AdminUser
 
     @Column(length = 20)
     private String status = "draft"; // draft, published, archived

@@ -1,6 +1,7 @@
 package com.insurance.advisor.backend.service;
 
 import com.insurance.advisor.backend.entity.Review;
+import com.insurance.advisor.backend.entity.enums.ApprovalStatus;
 import com.insurance.advisor.backend.repository.ReviewRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ReviewService {
      * Anyone can submit a review, but it defaults to 'pending'.
      */
     public ResponseEntity<String> submitReview( Review review, HttpServletRequest request) {
-        review.setApprovalStatus("pending");
+        review.setApprovalStatus(ApprovalStatus.PENDING);
         review.setIsFeatured(false);
         review.setSubmissionDate(LocalDateTime.now());
 
@@ -62,7 +63,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
 
-        review.setApprovalStatus(status); // approved or rejected
+        review.setApprovalStatus(ApprovalStatus.valueOf(status)); // approved or rejected
         if (featured != null) review.setIsFeatured(featured);
         review.setApprovedAt(LocalDateTime.now());
 
@@ -87,7 +88,7 @@ public class ReviewService {
     public ResponseEntity<?> updateReviewStatus( UUID id,  Map<String, Object> updates) {
         return reviewRepository.findById(id).map(review -> {
             if (updates.containsKey("approvalStatus")) {
-                review.setApprovalStatus((String) updates.get("approvalStatus"));
+                review.setApprovalStatus(ApprovalStatus.valueOf((String) updates.get("approvalStatus")));
             }
             if (updates.containsKey("isFeatured")) {
                 review.setFeatured((Boolean) updates.get("isFeatured"));
