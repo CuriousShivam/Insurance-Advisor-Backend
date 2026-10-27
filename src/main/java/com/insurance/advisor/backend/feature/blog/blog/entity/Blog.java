@@ -1,0 +1,87 @@
+package com.insurance.advisor.backend.feature.blog.blog.entity;
+
+import com.insurance.advisor.backend.feature.blog.blogCategory.entity.BlogCategory;
+import com.insurance.advisor.backend.feature.adminAuth.entity.AdminUser;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(
+        name = "blogs",
+        indexes = {
+                @Index(name = "idx_blog_blog_category", columnList = "category_id"),
+                @Index(name="idx_blog_slug", columnList = "slug")
+        }
+)
+@Getter @Setter
+public class Blog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @Column(nullable = false, length = 200)
+    private String title;
+
+    @Column(nullable = false, unique = true)
+    private String slug;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    @Column(columnDefinition = "TEXT")
+    private String excerpt; // Short summary for the blog card
+
+    // SEO Fields
+    @Column(name = "meta_title")
+    private String metaTitle;
+
+    @Column(name = "meta_description", columnDefinition = "TEXT")
+    private String metaDescription;
+
+    @Column(name = "meta_keywords")
+    private String metaKeywords;
+
+    @Column(name = "featured_image")
+    private String featuredImage;
+
+    // Relationships & Meta
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "category_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name="fk_category_id_from_blog_category")
+    )
+    private BlogCategory category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "author_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name="fk_author_id_from_admin_user")
+    )
+    private AdminUser authorId; // Links to your AdminUser
+
+    @Column(length = 20)
+    private String status = "draft"; // draft, published, archived
+
+    @Column(name = "view_count")
+    private Integer viewCount = 0;
+
+    @Column(name = "is_featured")
+    private Boolean isFeatured = false;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+}
