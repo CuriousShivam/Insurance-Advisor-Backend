@@ -1,9 +1,11 @@
 package com.insurance.advisor.backend.feature.adminAuth.controller;
 
+import com.insurance.advisor.backend.feature.adminAuth.dto.NewUserFields;
 import com.insurance.advisor.backend.feature.adminAuth.entity.AdminUser;
 import com.insurance.advisor.backend.feature.adminAuth.dto.AuthResponse;
-import com.insurance.advisor.backend.feature.adminAuth.dto.LoginInCreeds;
+import com.insurance.advisor.backend.feature.adminAuth.dto.LoginCredentials;
 import com.insurance.advisor.backend.feature.adminAuth.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +21,18 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerHandler(@RequestBody AdminUser user){
-        return authService.registerAdmin(user);
+    public ResponseEntity<AuthResponse> registerHandler(
+            @Valid @RequestBody NewUserFields userData
+    ){
+        AuthResponse resp = authService.registerAdmin(userData);
+        return ResponseEntity.ok(resp);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginHandler(
-            @RequestBody LoginInCreeds body
+            @RequestBody LoginCredentials body
     ){
-        return authService.login(body);
+        AuthResponse resp = authService.login(body);
+        return ResponseEntity.ok(resp);
     }
 }

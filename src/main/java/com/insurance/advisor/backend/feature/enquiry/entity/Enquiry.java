@@ -4,6 +4,7 @@ import com.insurance.advisor.backend.config.enums.FollowUpStatus;
 import com.insurance.advisor.backend.config.enums.InsuranceType;
 import com.insurance.advisor.backend.config.enums.PriorityLevel;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,10 +23,11 @@ import java.util.regex.Pattern;
 indexes = {
 @Index(name = "idx_enquiry_status", columnList = "follow_up_status"),
 @Index(name = "idx_enquiry_created_at", columnList = "created_at DESC"),
-@Index(name = "idx_enquiry_contact_lookup", columnList = "email, phone")
+@Index(name = "idx_enquiry_contact_lookup", columnList = "email, phone"),
+@Index(name = "idx_enquiry_insurance_type", columnList = "insurance_type"),
+@Index(name = "idx_enquiry_priority_level", columnList = "priority_level")
 })
-@Getter
-@Setter
+@Data
 public class Enquiry {
 
     @Id
@@ -35,6 +37,7 @@ public class Enquiry {
 
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName; // Customer's complete name [cite: 342]
+
 
     @Column(nullable = false, length = 100)
     private String email; // Customer email for follow-up [cite: 342]
@@ -50,7 +53,7 @@ public class Enquiry {
     private String requirements; // Detailed customer requirements [cite: 342]
 
     @Column(name = "preferred_contact_time", length = 50)
-    private String preferredContactTime; // Customer's preferred contact time [cite: 342]
+    private LocalDateTime preferredContactTime; // Customer's preferred contact time [cite: 342]
 
     @Column(name = "source_page", length = 100)
     private String sourcePage; // Website page that generated the enquiry [cite: 345]
